@@ -1,0 +1,61 @@
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+p code {
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+#__next {
+  height: 100%;
+}
+
+#nav-mobile {
+  min-height: 170px;
+}
+
+.nav-item.dropdown .dropdown-item {
+  padding: 0;
+}
+
+.nav-item.dropdown .dropdown-item a {
+  color: inherit;
+}
+
+.nav-item.dropdown .dropdown-item .navbar-item {
+  width: 100%;
+  padding: 0.55rem 1.5rem;
+}
+
+.result-block-container .result-block {
+  opacity: 1;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: var(--chakra-colors-brand-logo-text) !important;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  color: var(--chakra-colors-brand-darks-light) !important;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+.logo {
+  background-image: url('../public/melologoclear.png') !important;
+  width: 7rem !important;
+  height: 7rem !important;
+  margin: 0 !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
