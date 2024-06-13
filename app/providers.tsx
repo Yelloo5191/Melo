@@ -15,7 +15,9 @@ export default function Providers({
 }) {
   return (
     <SessionProvider session={session}>
-      <ChakraProvider theme={theme}>{children}</ChakraProvider>
+      <ChakraProvider theme={theme} cssVarsRoot={undefined}>
+        {children}
+      </ChakraProvider>
     </SessionProvider>
   );
 }
