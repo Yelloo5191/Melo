@@ -16,13 +16,14 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import PageLink from "./PageLink";
 import AnchorLink from "./AnchorLink";
 import { faUser, faPowerOff } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Header() {
   const { isOpen, onToggle } = useDisclosure();
   const { data: session, status } = useSession();
 
   const handleSignin = async () => {
-    await signIn();
+    await signIn("scope=user-read-private user-read-email user-top-read");
   };
 
   const handleSignout = async () => {
@@ -49,7 +50,23 @@ export default function Header() {
           onClick={onToggle}
           data-testid="navbar-toggle"
         >
-          <Button>Toggle</Button>
+          <Button>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 6H20M4 12H20M4 18H20"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Button>
         </Box>
 
         <HStack
@@ -106,9 +123,18 @@ export default function Header() {
                 <Heading size="sm">{session?.user.name}</Heading>
               </Box>
             </Box>
+            <PageLink href="/profile" testId="navbar-profile-mobile">
+              <Button
+                leftIcon={<FontAwesomeIcon icon={faUser} />}
+                variant="link"
+                data-testid="navbar-profile-mobile"
+              >
+                Profile
+              </Button>
+            </PageLink>
             <Button
               onClick={handleSignout}
-              leftIcon={<faPowerOff />}
+              leftIcon={<FontAwesomeIcon icon={faPowerOff} />}
               variant="link"
               data-testid="navbar-logout-desktop"
             >
@@ -147,7 +173,7 @@ export default function Header() {
                 </Box>
                 <Button
                   onClick={handleSignout}
-                  leftIcon={<faPowerOff />}
+                  leftIcon={<FontAwesomeIcon icon={faPowerOff} />}
                   variant="link"
                   data-testid="navbar-logout-mobile"
                 >

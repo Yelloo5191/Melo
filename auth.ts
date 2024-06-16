@@ -1,25 +1,17 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 
-const { handlers, auth, signIn, signOut } = NextAuth({
+export const authOptions: any = {
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      authorization: {
-        params: {
-          scope: "user-read-private user-read-email",
-          redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
-        },
-      },
+      authorization:
+        "https://accounts.spotify.com/authorize?scope=user-read-email+user-top-read",
     } as {
       clientId: string;
       clientSecret: string;
-      authorization: {
-        params: {
-          scope: string;
-        };
-      };
+      authorization: string;
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
@@ -27,6 +19,7 @@ const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
+    // @ts-ignore
     async jwt({ token, account, profile }) {
       if (account) {
         token.accessToken = account.access_token;
@@ -35,6 +28,7 @@ const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return token;
     },
+    // @ts-ignore
     async session({ session, token }): Promise<any> {
       session.accessToken = token.accessToken as string;
       session.refreshToken = token.refreshToken as string;
@@ -55,7 +49,9 @@ const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
-});
+};
+
+const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
 
 async function getRefreshToken() {
   const session = await auth();
@@ -75,6 +71,8 @@ async function getRefreshToken() {
       }),
       cache: "no-cache",
     });
+
+    console.log(response);
     const data = await response.json();
 
     return {

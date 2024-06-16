@@ -3,8 +3,8 @@ import { extendTheme } from "@chakra-ui/react";
 
 export const theme = extendTheme({
   fonts: {
-    heading: "var(--font-poly)",
-    body: "var(--font-poly)",
+    heading: "system-ui, sans-serif",
+    body: "system-ui, sans-serif",
   },
   colors: {
     brand: {
