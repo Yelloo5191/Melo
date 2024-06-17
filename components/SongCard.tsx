@@ -12,7 +12,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 
-const SongCard = ({ title, artist, cover }: any) => (
+const SongCard = ({ title, artist, cover, ...props }: any) => (
   <Card
     className="song-card"
     data-testid="song-card"
@@ -20,6 +20,7 @@ const SongCard = ({ title, artist, cover }: any) => (
     height={["100px", "300px"]}
     background="brand.darks.medium"
     margin="1rem"
+    {...props}
   >
     <Show above="sm">
       <CardHeader className="song-card-header">
@@ -32,7 +33,7 @@ const SongCard = ({ title, artist, cover }: any) => (
       </CardHeader>
     </Show>
     <HStack height={["100px", "300px"]} width="100%">
-      <Hide display="flex" above="sm" justifySelf="top" align="flex-end">
+      <Hide above="sm">
         <Image
           src={cover}
           alt="Song Cover"

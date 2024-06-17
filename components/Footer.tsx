@@ -20,14 +20,19 @@ export default function Footer() {
       justifyContent="center"
       alignItems="center"
     >
-      <Box margin={0} className="logo" data-testid="footer-logo" />
+      <Box
+        margin={0}
+        className="logo"
+        data-testid="footer-logo"
+        display={{ base: "none", md: "block" }}
+      />
       <Text margin={0} data-testid="footer-text">
-        Developed with
+        Developed with{" "}
         <FontAwesomeIcon
           icon={faHeart}
-          className="mx-1 fa-beat"
+          className="fa-beat"
           color="var(--chakra-colors-brand-primary-highlight)"
-        />
+        />{" "}
         by <Link href="https://github.com/Yelloo5191">Hovhannes Muradyan</Link>
       </Text>
     </ChakraFooter>

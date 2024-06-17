@@ -1,6 +1,6 @@
 import Dashboard from "@/components/Dashboard";
 
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 
 export default async function Page() {
   const session = await auth();
@@ -33,8 +33,26 @@ export default async function Page() {
 
     const recoms = await res2.json();
 
-    return <Dashboard topTracks={tracks.items} recoms={recoms.tracks} />;
+    const res3 = await fetch(
+      "https://api.spotify.com/v1/me/player/recently-played?limit=8",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+      },
+    );
+
+    const recentTracks = await res3.json();
+
+    return (
+      <Dashboard
+        topTracks={tracks.items}
+        recoms={recoms.tracks}
+        recentTracks={recentTracks.items}
+      />
+    );
   } else {
-    return <p>You must sign in before accessing your dashboard.</p>;
+    return signIn("spotify");
   }
 }

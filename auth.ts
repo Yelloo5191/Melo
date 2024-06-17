@@ -7,7 +7,7 @@ export const authOptions: any = {
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
       authorization:
-        "https://accounts.spotify.com/authorize?scope=user-read-email+user-top-read",
+        "https://accounts.spotify.com/authorize?scope=user-read-email+user-top-read+user-read-recently-played",
     } as {
       clientId: string;
       clientSecret: string;
@@ -35,15 +35,21 @@ export const authOptions: any = {
       session.user.id = token.id as string;
 
       const now = Math.floor(Date.now() / 1000);
-      const difference = Math.floor((session.expires - now) / 60);
+      const expires = Math.floor(new Date(session.expires).getTime() / 1000);
+      const difference = expires - now;
 
-      if (difference <= 10) {
-        const res = await getRefreshToken();
-        if (!res) {
-          return;
+      if (difference <= 600) {
+        // 10 minutes in seconds
+        console.log("Refreshing token");
+        const res = await getRefreshToken(token.refreshToken);
+        if (res) {
+          session.accessToken = res.accessToken;
+          session.refreshToken = res.refreshToken;
+          token.accessToken = res.accessToken;
+          token.refreshToken = res.refreshToken;
+        } else {
+          console.error("Failed to refresh token");
         }
-        session.accessToken = res.accessToken;
-        session.refreshToken = res.refreshToken;
       }
 
       return session;
@@ -53,33 +59,35 @@ export const authOptions: any = {
 
 const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
 
-async function getRefreshToken() {
-  const session = await auth();
-  if (session) {
-    const refreshToken = session.refreshToken;
-    const url = `https://accounts.spotify.com/api/token`;
+async function getRefreshToken(refreshToken: string) {
+  const url = `https://accounts.spotify.com/api/token`;
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "refresh_token" as string,
-        refresh_token: refreshToken as string,
-        client_id: process.env.SPOTIFY_CLIENT_ID as string,
-      }),
-      cache: "no-cache",
-    });
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString("base64")}`,
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token" as string,
+      refresh_token: refreshToken as string,
+      client_id: process.env.SPOTIFY_CLIENT_ID as string,
+      client_secret: process.env.SPOTIFY_CLIENT_SECRET as string,
+    }),
+    cache: "no-cache",
+  });
 
-    console.log(response);
-    const data = await response.json();
-
-    return {
-      accessToken: data.access_token as string,
-      refreshToken: data.refresh_token as string,
-    };
+  if (!response.ok) {
+    console.error("Failed to refresh token", await response.text());
+    return null;
   }
+
+  const data = await response.json();
+
+  return {
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token || refreshToken, // Spotify may not always return a new refresh token
+  };
 }
 
 export { handlers, auth, signIn, signOut };

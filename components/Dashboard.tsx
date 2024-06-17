@@ -21,11 +21,13 @@ import {
   Image,
   Text,
   Flex,
+  Code,
 } from "@chakra-ui/react";
 import Loading from "@/components/Loading";
 import SongCard from "./SongCard";
+import { getProfileImage } from "@/utils/spotify";
 
-function Dashboard({ topTracks, recoms }: any) {
+function Dashboard({ topTracks, recoms, recentTracks }: any) {
   const { data: session, status } = useSession();
 
   const user = session?.user;
@@ -38,7 +40,7 @@ function Dashboard({ topTracks, recoms }: any) {
         <Flex direction={{ base: "column", md: "row" }} align="center" mb={6}>
           <Box flexShrink={0} mr={{ base: 0, md: 6 }} mb={{ base: 4, md: 0 }}>
             <Image
-              src={user.image as string}
+              src={getProfileImage(session)}
               alt="Profile"
               borderRadius="full"
               boxSize="150px"
@@ -83,14 +85,101 @@ function Dashboard({ topTracks, recoms }: any) {
               </Tbody>
             </Table>
           </TableContainer>
-          <Box>
+
+          {/* Desktop */}
+          <Flex display={{ base: "none", md: "flex" }} flexWrap="wrap">
+            <Box>
+              <Heading as="h3" fontSize="2xl" mb={4}>
+                Your Recent Top Tracks
+              </Heading>
+              <Tabs variant="soft-rounded" colorScheme="blue">
+                <TabList>
+                  {Array.from(
+                    { length: Math.ceil(topTracks.length / 8) },
+                    (_, i) => (
+                      <Tab key={i}>{i + 1}</Tab>
+                    ),
+                  )}
+                </TabList>
+                <TabPanels>
+                  {Array.from(
+                    { length: Math.ceil(topTracks.length / 8) },
+                    (_, i) => (
+                      <TabPanel key={i}>
+                        <Box
+                          display="grid"
+                          gridTemplateColumns="repeat(4, 1fr)"
+                          gap={2}
+                        >
+                          {/* @ts-ignore */}
+                          {topTracks.slice(i * 8, i * 8 + 8).map((song, j) => (
+                            <Box key={j}>
+                              <SongCard
+                                title={song.name}
+                                artist={song.artists[0].name}
+                                cover={song.album.images[0].url}
+                              />
+                            </Box>
+                          ))}
+                        </Box>
+                      </TabPanel>
+                    ),
+                  )}
+                </TabPanels>
+              </Tabs>
+            </Box>
+            <Box>
+              <Heading as="h3" fontSize="2xl" mb={4}>
+                Your Recently Played
+              </Heading>
+              <Box>
+                {recentTracks.map((song: any, i: number) => (
+                  <Flex
+                    key={i}
+                    mb={4}
+                    align="center"
+                    p={4}
+                    borderRadius="md"
+                    boxShadow="md"
+                    background="brand.darks.medium"
+                  >
+                    <Image
+                      src={song.track.album.images[0].url}
+                      alt={song.track.name}
+                      boxSize="50px"
+                      borderRadius="md"
+                      mr={4}
+                    />
+                    <Box>
+                      <Text fontWeight="bold" fontSize="lg">
+                        {song.track.name}
+                      </Text>
+                      <Text color="gray.600">{song.track.artists[0].name}</Text>
+                      <Text color="gray.500" fontSize="sm">
+                        {Math.ceil(
+                          (new Date().getTime() -
+                            new Date(song.played_at).getTime()) /
+                            1000 /
+                            60,
+                        )}{" "}
+                        minutes ago
+                      </Text>
+                    </Box>
+                  </Flex>
+                ))}
+              </Box>
+            </Box>
+          </Flex>
+
+          {/* Mobile */}
+          <Box display={{ base: "block", md: "none" }}>
             <Heading as="h3" fontSize="2xl" mb={4}>
               Your Recent Top Tracks
             </Heading>
-            <Tabs variant="enclosed">
+            <Tabs variant="soft-rounded" colorScheme="blue">
               <TabList>
                 {Array.from(
-                  { length: Math.ceil(topTracks.length / 8) },
+                  { length: Math.ceil(topTracks.length / 4) },
                   (_, i) => (
                     <Tab key={i}>{i + 1}</Tab>
                   ),
@@ -98,24 +187,68 @@ function Dashboard({ topTracks, recoms }: any) {
               </TabList>
               <TabPanels>
                 {Array.from(
-                  { length: Math.ceil(topTracks.length / 8) },
+                  { length: Math.ceil(topTracks.length / 4) },
                   (_, i) => (
                     <TabPanel key={i}>
-                      <Flex flexWrap="wrap" justifyContent="space-between">
-                        {topTracks.slice(i * 8, i * 8 + 8).map((song, j) => (
-                          <SongCard
-                            key={j}
-                            title={song.name}
-                            artist={song.artists[0].name}
-                            cover={song.album.images[0].url}
-                          />
+                      <Box gridTemplateColumns="repeat(2, 1fr)" gap={4}>
+                        {/* @ts-ignore */}
+                        {topTracks.slice(i * 4, i * 4 + 4).map((song, j) => (
+                          <Box key={j} width="100%">
+                            <SongCard
+                              title={song.name}
+                              artist={song.artists[0].name}
+                              cover={song.album.images[0].url}
+                              width="100%"
+                              mx="auto"
+                            />
+                          </Box>
                         ))}
-                      </Flex>
+                      </Box>
                     </TabPanel>
                   ),
                 )}
               </TabPanels>
             </Tabs>
+          </Box>
+          <Box display={{ base: "block", md: "none" }}>
+            <Heading as="h3" fontSize="2xl" mb={4}>
+              Your Recently Played
+            </Heading>
+            <Box>
+              {recentTracks.map((song: any, i: number) => (
+                <Flex
+                  key={i}
+                  mb={4}
+                  align="center"
+                  p={4}
+                  borderRadius="md"
+                  boxShadow="md"
+                >
+                  <Image
+                    src={song.track.album.images[0].url}
+                    alt={song.track.name}
+                    boxSize="50px"
+                    borderRadius="md"
+                    mr={4}
+                  />
+                  <Box>
+                    <Text fontWeight="bold" fontSize="lg">
+                      {song.track.name}
+                    </Text>
+                    <Text color="gray.600">{song.track.artists[0].name}</Text>
+                    <Text color="gray.500" fontSize="sm">
+                      {Math.ceil(
+                        (new Date().getTime() -
+                          new Date(song.played_at).getTime()) /
+                          1000 /
+                          60,
+                      )}{" "}
+                      minutes ago
+                    </Text>
+                  </Box>
+                </Flex>
+              ))}
+            </Box>
           </Box>
         </Box>
       )}
