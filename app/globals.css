@@ -70,3 +70,8 @@ img {
 #qsLogoutBtn {
     color: var(--chakra-colors-brand-logo-text) !important;
 }
+
+mark {
+    background-color: transparent;
+    color: var(--chakra-colors-brand-primary-highlight);
+}
