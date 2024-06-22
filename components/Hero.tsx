@@ -12,11 +12,11 @@ function Hero() {
         <VStack
             className="hero my-5 text-center"
             data-testid="hero"
-            width="50%"
+            width={{ base: "90%", md: "50%" }}
             mx="auto"
         >
             <Logo testId="hero-logo" />
-            <Heading data-testid="hero-title">
+            <Heading data-testid="hero-title" textAlign="center">
                 Find your <mark>noise.</mark>
             </Heading>
             <Text

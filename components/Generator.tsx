@@ -16,7 +16,10 @@ import {
     Spacer,
     Center,
     AspectRatio,
+    Image,
 } from "@chakra-ui/react";
+
+import { useRouter } from "next/navigation";
 
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,6 +35,8 @@ function Generator() {
     const [mood, setMood] = React.useState("None");
     const [isLoadingResult, setIsLoadingResult] = React.useState(true);
     const [playlistLink, setPlaylistLink] = React.useState("");
+    const [playlistURI, setPlaylistURI] = React.useState("");
+    const router = useRouter();
 
     const moods = {
         Happy: {
@@ -90,6 +95,14 @@ function Generator() {
             icon: "🤪",
             color: "#7076fc",
         },
+        None: {
+            name: "None",
+            energy: [0.0, 1.0],
+            tempo: [0, 200],
+            key: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+            icon: "🎶",
+            color: "#f5f5f5",
+        },
     };
 
     return (
@@ -147,25 +160,33 @@ function Generator() {
                         Select the mood you want for your playlist
                     </Heading>
 
-                    <Flex justifyContent="center" mt={4} px={40} wrap="wrap">
-                        {Object.keys(moods).map((mood) => (
-                            <>
-                                <Spacer />
-                                <Button
-                                    key={mood}
-                                    onClick={() => {
-                                        setMood(mood);
-                                        setNavState("confirm");
-                                    }}
-                                    // @ts-ignore
-                                    background={moods[mood].color}
-                                >
-                                    {/* @ts-ignore */}
-                                    {moods[mood].icon} {mood}
-                                </Button>
-                                <Spacer />
-                            </>
-                        ))}
+                    <Flex
+                        justifyContent="center"
+                        mt={4}
+                        px={{ base: 0, md: 40 }}
+                        gap={4}
+                        wrap="wrap"
+                    >
+                        {Object.keys(moods).map((mood) => {
+                            if (mood === "None") return null;
+                            else
+                                return (
+                                    <>
+                                        <Button
+                                            key={mood}
+                                            onClick={() => {
+                                                setMood(mood);
+                                                setNavState("confirm");
+                                            }}
+                                            // @ts-ignore
+                                            background={moods[mood].color}
+                                        >
+                                            {/* @ts-ignore */}
+                                            {moods[mood].icon} {mood}
+                                        </Button>
+                                    </>
+                                );
+                        })}
                     </Flex>
 
                     <Heading mt={10} size="lg" textAlign="center">
@@ -181,7 +202,7 @@ function Generator() {
                         }}
                         mt={4}
                     >
-                        Generate
+                        {moods["None"].icon} {mood}
                     </Button>
                 </Box>
             )}
@@ -198,14 +219,13 @@ function Generator() {
                             setNavState("result");
                             setIsLoadingResult(true);
                             // @ts-ignore
-                            console.log(moods[mood]);
                             const res = await createCustomPlaylist(
                                 session,
                                 // @ts-ignore
                                 moods[mood]
                             );
-                            console.log(res);
                             setPlaylistLink(res.id);
+                            setPlaylistURI(res.uri);
                             setTimeout(() => {
                                 setIsLoadingResult(false);
                             }, 2000);
@@ -222,7 +242,23 @@ function Generator() {
                     {isLoadingResult ? (
                         <Loading width="100px" height="100px" />
                     ) : (
-                        <Box>
+                        <Box display="flex" flexDir="column">
+                            <Button
+                                margin="auto"
+                                onClick={() => router.push(playlistURI)}
+                                background="#191414"
+                                color="#1DB954"
+                                gap={2}
+                                mx="auto"
+                            >
+                                <Image
+                                    src="/Spotify_Icon_RGB_Green.png"
+                                    width="20px"
+                                    alt="Spotify Logo"
+                                />
+                                {"  "}
+                                Open Spotify
+                            </Button>
                             <Heading size="lg" textAlign="center">
                                 Your playlist is ready.
                             </Heading>

@@ -141,7 +141,7 @@ export default function Header() {
                                 border="none"
                                 boxShadow="0px 0px 50px var(--chakra-colors-brand-logo-light)"
                             >
-                                <MenuItem
+                                {/* <MenuItem
                                     background="brand.darks.dark"
                                     data-testid="navbar-profile-desktop"
                                     onClick={() => router.push("/profile")}
@@ -151,7 +151,7 @@ export default function Header() {
                                         style={{ marginRight: "8px" }}
                                     />
                                     Profile
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem
                                     background="brand.darks.dark"
                                     onClick={handleSignout}
@@ -213,14 +213,14 @@ export default function Header() {
                                         </Heading>
                                     </Box>
                                 </Box>
-                                <Button
+                                {/* <Button
                                     onClick={() => router.push("/profile")}
                                     leftIcon={<FontAwesomeIcon icon={faUser} />}
                                     variant="link"
                                     data-testid="navbar-profile-mobile"
                                 >
                                     Profile
-                                </Button>
+                                </Button> */}
                                 <Button
                                     onClick={handleSignout}
                                     leftIcon={

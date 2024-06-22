@@ -22,6 +22,7 @@ import {
     Text,
     Flex,
     Code,
+    HStack,
 } from "@chakra-ui/react";
 import Loading from "@/components/Loading";
 import SongCard from "./SongCard";
@@ -78,9 +79,16 @@ function Dashboard({ topTracks, recoms, recentTracks }: any) {
                             <Thead>
                                 <Tr>
                                     <Th colSpan={2}>
-                                        <Heading as="h3" fontSize="2xl">
-                                            Recommended Tracks
-                                        </Heading>
+                                        <HStack>
+                                            <Image
+                                                src="Spotify_Icon_RGB_Green.png"
+                                                boxSize="50px"
+                                                alt="Spotify Logo"
+                                            />
+                                            <Heading as="h3" fontSize="xl">
+                                                Recommended Tracks
+                                            </Heading>
+                                        </HStack>
                                     </Th>
                                 </Tr>
                                 <Tr>
@@ -109,9 +117,16 @@ function Dashboard({ topTracks, recoms, recentTracks }: any) {
                         flexWrap="wrap"
                     >
                         <Box>
-                            <Heading as="h3" fontSize="2xl" mb={4}>
-                                Your Recent Top Tracks
-                            </Heading>
+                            <HStack mb={4}>
+                                <Image
+                                    src="Spotify_Icon_RGB_Green.png"
+                                    boxSize="50px"
+                                    alt="Spotify Logo"
+                                />
+                                <Heading as="h3" fontSize="2xl">
+                                    Your Recent Top Tracks
+                                </Heading>
+                            </HStack>
                             <Tabs variant="soft-rounded" colorScheme="blue">
                                 <TabList>
                                     {Array.from(
@@ -174,9 +189,16 @@ function Dashboard({ topTracks, recoms, recentTracks }: any) {
                             </Tabs>
                         </Box>
                         <Box>
-                            <Heading as="h3" fontSize="2xl" mb={4}>
-                                Your Recently Played
-                            </Heading>
+                            <HStack mb={4}>
+                                <Image
+                                    src="Spotify_Icon_RGB_Green.png"
+                                    boxSize="50px"
+                                    alt="Spotify Logo"
+                                />
+                                <Heading as="h3" fontSize="2xl">
+                                    Your Recently Played
+                                </Heading>
+                            </HStack>
                             <Box>
                                 {recentTracks.map((song: any, i: number) => (
                                     <Flex
@@ -228,9 +250,16 @@ function Dashboard({ topTracks, recoms, recentTracks }: any) {
 
                     {/* Mobile */}
                     <Box display={{ base: "block", md: "none" }}>
-                        <Heading as="h3" fontSize="2xl" mb={4}>
-                            Your Recent Top Tracks
-                        </Heading>
+                        <HStack mb={4}>
+                            <Image
+                                src="Spotify_Icon_RGB_Green.png"
+                                boxSize="50px"
+                                alt="Spotify Logo"
+                            />
+                            <Heading as="h3" fontSize="2xl">
+                                Your Recent Top Tracks
+                            </Heading>
+                        </HStack>
                         <Tabs variant="soft-rounded" colorScheme="blue">
                             <TabList>
                                 {Array.from(
@@ -277,6 +306,7 @@ function Dashboard({ topTracks, recoms, recentTracks }: any) {
                                                                     }
                                                                     width="100%"
                                                                     mx="auto"
+                                                                    my={1}
                                                                 />
                                                             </Box>
                                                         )
@@ -289,9 +319,16 @@ function Dashboard({ topTracks, recoms, recentTracks }: any) {
                         </Tabs>
                     </Box>
                     <Box display={{ base: "block", md: "none" }}>
-                        <Heading as="h3" fontSize="2xl" mb={4}>
-                            Your Recently Played
-                        </Heading>
+                        <HStack mb={4}>
+                            <Image
+                                src="Spotify_Icon_RGB_Green.png"
+                                boxSize="50px"
+                                alt="Spotify Logo"
+                            />
+                            <Heading as="h3" fontSize="2xl">
+                                Your Recently Played
+                            </Heading>
+                        </HStack>
                         <Box>
                             {recentTracks.map((song: any, i: number) => (
                                 <Flex
