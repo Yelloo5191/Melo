@@ -1,4 +1,4 @@
-<img  src="Frontend/public/melologo.jpg"  width="200px;"  />
+<img  src="public/melologo.jpg"  width="200px;"  />
 
 # MELO
 
