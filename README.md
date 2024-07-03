@@ -16,6 +16,10 @@ https://github.com/Yelloo5191/Melo/assets/76452706/7bbed10f-1bc4-48f6-b98c-2de6b
 Project Stack:<br/>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/2048px-Typescript_logo_2020.svg.png" width="64px;" />
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="64px;" />
+<img src="https://next-auth.js.org/img/logo/logo-sm.png" width="64px;" />
+<img src="https://avatars.githubusercontent.com/u/54212428?s=280&v=4" width="64px;" />
 <img src="https://www.drupal.org/files/project-images/nextjs-icon-dark-background.png" width="64px;" />
 <img src="https://assets.vercel.com/image/upload/front/favicon/vercel/180x180.png" width="64px;" />
+
+
 
