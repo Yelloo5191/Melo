@@ -36,7 +36,7 @@ function Dashboard({ topTracks, recoms, recentTracks }: any) {
     const isLoading = status === "loading";
 
     return (
-        <Container>
+        <Container px={{ base: 4, md: 0 }} py={20} height="100%">
             {isLoading && <Loading />}
             {user && (
                 <Flex

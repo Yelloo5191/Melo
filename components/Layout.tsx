@@ -5,7 +5,7 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-import { Box, Alert, AlertIcon } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import { Container } from "reactstrap";
 
@@ -23,12 +23,6 @@ export default function Layout({ children }: any) {
             height={"100vh"}
             data-testid="layout"
         >
-            <Alert status="warning" color="black">
-                <AlertIcon />
-                Melo is currently undergoing an Extension Request with Spotify,
-                new users will not be able to sign in until the request is
-                approved.
-            </Alert>
             <Header />
             <Container style={{ flexGrow: 1, marginTop: 5 }}>
                 {children}

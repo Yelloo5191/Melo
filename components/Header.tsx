@@ -16,6 +16,8 @@ import {
     MenuButton,
     MenuList,
     forwardRef,
+    Alert,
+    AlertIcon,
 } from "@chakra-ui/react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import PageLink from "./PageLink";
@@ -49,6 +51,12 @@ export default function Header() {
             bg="brand.darks.medium"
             boxShadow="0px 0px 100px var(--chakra-colors-brand-logo-light)"
         >
+            <Alert status="warning" color="black">
+                <AlertIcon />
+                Melo is currently undergoing an Extension Request with Spotify,
+                new users will not be able to sign in until the request is
+                approved.
+            </Alert>
             <Flex
                 width="100%"
                 justifyContent="space-between"
